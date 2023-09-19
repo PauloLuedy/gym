@@ -1,0 +1,26 @@
+service: gym
+frameworkVersion: '3'
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-jetpack
+  # - serverless-plugin-warmup
+provider:
+  name: aws
+  runtime: nodejs18.x
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!.git/**'
+    - '!.serverless/**'
+    - '!yarn.lock'
+    - '!package-lock.json'
+  excludeDevDependencies: true
+functions:
+  main:
+    handler: src/lambda.handler
+    events:
+      - http:
+          method: any
+          path: /{any+}
