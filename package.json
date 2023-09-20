@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "ts-node src/main",
     "start:dev": "npx serverless offline",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",

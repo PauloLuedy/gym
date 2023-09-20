@@ -162,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/gym/dev/1695168684549-2023-09-20T00:11:24.549Z/main.zip"
+          "S3Key": "serverless/gym/dev/1695169680326-2023-09-20T00:28:00.326Z/main.zip"
         },
         "Handler": "src/lambda.handler",
         "Runtime": "nodejs18.x",
@@ -180,14 +180,14 @@
         "MainLogGroup"
       ]
     },
-    "MainLambdaVersion6d6f3YtVryGjfXR5TkIysVx84obvk7htFChDjkY": {
+    "MainLambdaVersion6VKWWTru7EeWgl7VNtCv9uBZHCZ89lKfSMKdEs91kk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MainLambdaFunction"
         },
-        "CodeSha256": "S7bccuvlOOBFzi/t2fhHHWYDoBZ/8suMx6QiRDbrXpE="
+        "CodeSha256": "r8AM1/7v1uc8zpt+hDZMvsDRdUA15gSaY6C57FX8wgM="
       }
     },
     "ApiGatewayRestApi": {
@@ -263,7 +263,7 @@
         "MainLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1695168650614": {
+    "ApiGatewayDeployment1695169645116": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -325,7 +325,7 @@
     "MainLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MainLambdaVersion6d6f3YtVryGjfXR5TkIysVx84obvk7htFChDjkY"
+        "Ref": "MainLambdaVersion6VKWWTru7EeWgl7VNtCv9uBZHCZ89lKfSMKdEs91kk"
       },
       "Export": {
         "Name": "sls-gym-dev-MainLambdaFunctionQualifiedArn"
