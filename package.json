@@ -27,7 +27,8 @@
     "@vendia/serverless-express": "^4.10.4",
     "aws-lambda": "^1.0.7",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
