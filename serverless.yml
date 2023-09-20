@@ -7,6 +7,7 @@ plugins:
   # - serverless-plugin-warmup
 provider:
   name: aws
+  region: us-east-2
   runtime: nodejs18.x
 package:
   individually: true
