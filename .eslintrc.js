@@ -1,52 +1,24 @@
-const { rules: baseStyleRules } = require('eslint-config-airbnb-base/rules/style');
-
 module.exports = {
-  env: {
-    es2021: true,
-    node: true,
-  },
-  extends: [
-    'airbnb',
-    'airbnb-typescript/base',
-  ],
-  overrides: [
-    {
-      env: {
-        node: true,
-      },
-      files: [
-        '.eslintrc.{js,cjs}',
-      ],
-      parserOptions: {
-        sourceType: 'script',
-      },
-    },
-  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
-    ecmaVersion: 'latest',
+    project: 'tsconfig.json',
     sourceType: 'module',
-
   },
-  plugins: [
-    // '@typescript-eslint',
-    'import',
+  plugins: ['@typescript-eslint/eslint-plugin'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended',
   ],
+  root: true,
+  env: {
+    node: true,
+    jest: true,
+  },
   rules: {
-    'linebreak-style': 'off',
-    'import/prefer-default-export': 'off',
-    'class-methods-use-this': 'off',
-    'import/no-cycle': 'off',
-    '@typescript-eslint/comma-dangle': 'off',
-    '@typescript-eslint/indent': [2, 2, {
-      ...baseStyleRules.indent[2],
-      ignoredNodes: [
-        ...baseStyleRules.indent[2].ignoredNodes,
-        'PropertyDefinition[decorators]',
-        'TSUnionType',
-        'FunctionExpression[params]:has(Identifier[decorators])',
-      ],
-    }],
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 };

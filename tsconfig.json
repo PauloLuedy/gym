@@ -2,30 +2,15 @@
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
-    "noImplicitAny": false,
     "removeComments": true,
-    "noLib": false,
-    "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "ES2017",
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "strict": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "strictPropertyInitialization": false
-  },
-  "ts-node": {
-    "transpileOnly": true
-  },
-  "include": [
-    "src",
-    ".eslintrc.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+    "incremental": true,
+    "skipLibCheck": true
+  }
 }
