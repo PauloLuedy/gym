@@ -1,0 +1,20 @@
+input UserUniqueInput {
+  id: Float
+  email: String
+}
+
+type Exercice {
+  id: Int!
+  name: String
+  img: String!
+
+}
+
+type Query {
+  allUsers: [User!]
+}
+
+input UserCreateInput {
+  email: String!
+  name: String
+}

@@ -8,23 +8,13 @@ import { PrismaService } from '../../../prisma.service';
 import { ObjectType, Field, Int } from '@nestjs/graphql'
 import { IsEmail } from 'class-validator'
 
-class User {
-  @Field((type) => Int)
-  id: number
 
-  @Field()
-  @IsEmail()
-  email: string
 
-  @Field((type) => String, { nullable: true })
-  name?: string | null
-}
-
-@Resolver('User')
+@Resolver()
 export class UserResolver {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  @Query((returns) => [User])
+  @Query()
   async allUsers() {
     return this.prismaService.user.findMany()
   }
