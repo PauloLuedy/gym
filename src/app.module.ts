@@ -1,15 +1,15 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { PrismaService } from './prisma.service';
-import { UserResolver } from './graphql/modules/users/resolvers.users';
 import { join } from 'path';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { UserResolver } from './modules/users/resolvers.users';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./src/graphql/modules/**/*.graphql'],
+      typePaths: ['./src/modules/**/*.graphql'],
       playground: true,
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
@@ -19,4 +19,4 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
   controllers: [],
   providers: [PrismaService, UserResolver],
 })
-export class AppModule {}
+export class AppModule { }

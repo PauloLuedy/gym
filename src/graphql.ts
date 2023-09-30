@@ -18,14 +18,20 @@ export interface UserCreateInput {
     name?: Nullable<string>;
 }
 
-export interface User {
+export interface Exercice {
     id: number;
-    email: string;
     name?: Nullable<string>;
+    img: string;
 }
 
 export interface IQuery {
     allUsers(): Nullable<User[]> | Promise<Nullable<User[]>>;
+}
+
+export interface User {
+    id: number;
+    email: string;
+    name?: Nullable<string>;
 }
 
 type Nullable<T> = T | null;
