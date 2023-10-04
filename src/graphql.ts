@@ -18,13 +18,21 @@ export interface UserCreateInput {
     name?: Nullable<string>;
 }
 
-export interface Exercice {
+export interface Limb {
     id: number;
+    description: string;
+    sub?: Nullable<JSON>;
+}
+
+export interface Exercise {
     name?: Nullable<string>;
-    img: string;
+    tipo?: Nullable<string>;
+    leg?: Nullable<Limb>;
+    arm?: Nullable<Limb>;
 }
 
 export interface IQuery {
+    allExercises(): Exercise | Promise<Exercise>;
     allUsers(): Nullable<User[]> | Promise<Nullable<User[]>>;
 }
 
@@ -34,4 +42,5 @@ export interface User {
     name?: Nullable<string>;
 }
 
+export type JSON = any;
 type Nullable<T> = T | null;
