@@ -1,0 +1,18 @@
+scalar JSON
+
+type Limb {
+  id: Int!
+  description: String!
+  sub: JSON
+}
+
+type Exercise {
+  name: String
+  tipo: String
+  leg: Limb
+  arm: Limb
+}
+
+type Query {
+  allExercises: Exercise!
+}

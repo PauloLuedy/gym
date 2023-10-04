@@ -12,7 +12,7 @@ export class UserResolver {
 
   @Query()
   async allUsers() {
-    return this.prismaService.user.findMany()
+    return this.prismaService.usuario.findMany()
   }
 }
 
