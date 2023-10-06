@@ -16,18 +16,26 @@ model User {
 }
 
 model Category {
-  id        Int        @id @default(autoincrement())
+  id        Int                  @id @default(autoincrement())
   name      Json
-  exercises Exercise[]
+  exercises CategoryToExercise[]
 }
 
 model Exercise {
-  id         Int        @id @default(autoincrement())
+  id         Int                  @id @default(autoincrement())
   name       String
   img        String?
-  categoryId Int
-  category   Category   @relation(fields: [categoryId], references: [id])
+  categories CategoryToExercise[]
   trainings  Training[]
+}
+
+model CategoryToExercise {
+  categoryId Int
+  exerciseId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  @@id([categoryId, exerciseId])
 }
 
 model Training {

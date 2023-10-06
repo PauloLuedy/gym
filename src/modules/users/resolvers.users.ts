@@ -18,13 +18,20 @@ export class UserResolver {
         user: true,
         exercise: {
           include: {
-            category: true
+            categories: {
+              include: {
+                category: {
+                  include: {
+                    exercises: true
+                  }
+                }
+              }
+            }
           }
         }
       }
     })
-
-    const category = await this.prismaService.category.findMany()
+    console.log(training[0].exercise.categories);
 
     return training
   }

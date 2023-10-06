@@ -1,3 +1,17 @@
+type ExerciseCategory {
+  id: Int
+  categoryId: Int!
+  exerciseId: Int!
+  category: Category!
+}
+
+type Exercise {
+  id: Int!
+  name: String!
+  img: String
+  categories: [ExerciseCategory!]!
+}
+
 input UserUniqueInput {
   id: Float
   email: String
@@ -12,16 +26,31 @@ type User {
 type Category {
   id: Int!
   name: String!
+  exercise: Exercise
 }
 
 type Exercise {
   id: Int!
   name: String!
   img: String
-  category: Category
+}
+
+type ExerciseCategory {
+  categoryId: Int!
+  exerciseId: Int!
+  category: Category!
+}
+
+type Exercise {
+  id: Int!
+  name: String!
+  img: String
+  categories: [ExerciseCategory!]!
 }
 
 type Training {
+  id: Int
+  type: String
   user: User
   exercise: Exercise
 }
@@ -35,7 +64,6 @@ input UserCreateInput {
   name: String
   password: String
 }
-
 
 type Mutation {
   createUser(data: UserCreateInput!): User!

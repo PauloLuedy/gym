@@ -19,6 +19,20 @@ export interface UserCreateInput {
     password?: Nullable<string>;
 }
 
+export interface ExerciseCategory {
+    id?: Nullable<number>;
+    categoryId: number;
+    exerciseId: number;
+    category: Category;
+}
+
+export interface Exercise {
+    id: number;
+    name: string;
+    img?: Nullable<string>;
+    categories: ExerciseCategory[];
+}
+
 export interface User {
     id: number;
     email: string;
@@ -30,14 +44,9 @@ export interface Category {
     name: string;
 }
 
-export interface Exercise {
-    id: number;
-    name: string;
-    img?: Nullable<string>;
-    category?: Nullable<Category>;
-}
-
 export interface Training {
+    id?: Nullable<number>;
+    type?: Nullable<string>;
     user?: Nullable<User>;
     exercise?: Nullable<Exercise>;
 }
