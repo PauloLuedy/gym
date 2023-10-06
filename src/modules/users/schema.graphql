@@ -9,11 +9,34 @@ type User {
   name: String
 }
 
+type Category {
+  id: Int!
+  name: String!
+}
+
+type Exercise {
+  id: Int!
+  name: String!
+  img: String
+  category: Category
+}
+
+type Training {
+  user: User
+  exercise: Exercise
+}
+
 type Query {
-  allUsers: [User!]
+  allUsers: [Training!]
 }
 
 input UserCreateInput {
   email: String!
   name: String
+  password: String
+}
+
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
 }

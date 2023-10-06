@@ -7,35 +7,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id         Int         @id @default(autoincrement())
-  email      String      @unique
-  name       String?
-  exercicios Exercicio[]
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  trainings Training[]
 }
 
-model Exercicio {
-  id        Int     @id @default(autoincrement())
-  name      String?
-  tipo      String?
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
-  usuarioId Int
-  perna     Perna?  @relation(fields: [pernaId], references: [id])
-  pernaId   Int?
-  braco     Braco?  @relation(fields: [bracoId], references: [id])
-  bracoId   Int?
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      Json
+  exercises Exercise[]
 }
 
-model Perna {
-  id          Int         @id @default(autoincrement())
-  description String?
-  sub         Json
-  exercicios  Exercicio[]
+model Exercise {
+  id         Int        @id @default(autoincrement())
+  name       String
+  img        String?
+  categoryId Int
+  category   Category   @relation(fields: [categoryId], references: [id])
+  trainings  Training[]
 }
 
-model Braco {
-  id          Int         @id @default(autoincrement())
-  description String?
-  sub         Json
-  exercicios  Exercicio[]
+model Training {
+  id         Int      @id @default(autoincrement())
+  type       String
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  exerciseId Int
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
 }

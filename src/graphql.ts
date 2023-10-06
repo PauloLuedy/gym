@@ -16,24 +16,7 @@ export interface UserUniqueInput {
 export interface UserCreateInput {
     email: string;
     name?: Nullable<string>;
-}
-
-export interface Limb {
-    id: number;
-    description: string;
-    sub?: Nullable<JSON>;
-}
-
-export interface Exercise {
-    name?: Nullable<string>;
-    tipo?: Nullable<string>;
-    leg?: Nullable<Limb>;
-    arm?: Nullable<Limb>;
-}
-
-export interface IQuery {
-    allExercises(): Exercise | Promise<Exercise>;
-    allUsers(): Nullable<User[]> | Promise<Nullable<User[]>>;
+    password?: Nullable<string>;
 }
 
 export interface User {
@@ -42,5 +25,29 @@ export interface User {
     name?: Nullable<string>;
 }
 
-export type JSON = any;
+export interface Category {
+    id: number;
+    name: string;
+}
+
+export interface Exercise {
+    id: number;
+    name: string;
+    img?: Nullable<string>;
+    category?: Nullable<Category>;
+}
+
+export interface Training {
+    user?: Nullable<User>;
+    exercise?: Nullable<Exercise>;
+}
+
+export interface IQuery {
+    allUsers(): Nullable<Training[]> | Promise<Nullable<Training[]>>;
+}
+
+export interface IMutation {
+    createUser(data: UserCreateInput): User | Promise<User>;
+}
+
 type Nullable<T> = T | null;
