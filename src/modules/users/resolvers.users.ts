@@ -1,45 +1,32 @@
-import { Inject } from '@nestjs/common';
-import {
-  Mutation,
-  Query,
-  Resolver,
-} from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
+
 import 'reflect-metadata';
 import { PrismaService } from '../../prisma.service';
+import { Inject } from '@nestjs/common';
 
 @Resolver()
-export class UserResolver {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) { }
+export class UserResolvers {
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   @Query()
-  async allUsers() {
-    const training = await this.prismaService.training.findMany({
+  async user(_, @Args('userId') userId: number) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        userId,
+      },
       include: {
-        user: true,
-        exercise: {
+        trainings: {
           include: {
-            categories: {
-              include: {
-                category: {
-                  include: {
-                    exercises: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    })
-    console.log(training[0].exercise.categories);
+            user: true,
+          },
+        },
+      },
+    });
 
-    return training
-  }
+    if (!user) {
+      throw new Error(`Usuário com ID ${userId} não encontrado`);
+    }
 
-  @Mutation()
-  async createUser(_, data) {
-    return this.prismaService.user.create({ ...data });
+    return user;
   }
 }
-
-

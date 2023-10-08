@@ -1,70 +1,43 @@
-type ExerciseCategory {
-  id: Int
-  categoryId: Int!
-  exerciseId: Int!
-  category: Category!
-}
-
-type Exercise {
-  id: Int!
-  name: String!
-  img: String
-  categories: [ExerciseCategory!]!
-}
-
-input UserUniqueInput {
-  id: Float
-  email: String
-}
-
 type User {
-  id: Int!
-  email: String!
+  userId: Int!
   name: String
+  email: String!
+  password: String!
+  trainings: [Training!]
 }
 
 type Category {
-  id: Int!
-  name: String!
-  exercise: Exercise
-}
-
-type Exercise {
-  id: Int!
-  name: String!
-  img: String
-}
-
-type ExerciseCategory {
   categoryId: Int!
-  exerciseId: Int!
-  category: Category!
+  name: String
+  exercises: [CategoryToExercise!]
 }
 
 type Exercise {
-  id: Int!
-  name: String!
+  exerciseID: Int!
+  name: String
   img: String
-  categories: [ExerciseCategory!]!
+  categories: [CategoryToExercise!]
+  trainings: [TrainingToExercise!]
 }
 
 type Training {
-  id: Int
-  type: String
-  user: User
-  exercise: Exercise
+  id: Int!
+  user: User!
+  exercises: [TrainingToExercise!]
+}
+
+type CategoryToExercise {
+  categoryIdReference: Int!
+  exerciseIdReference: Int!
+  category: Category!
+  exercise: Exercise!
+}
+
+type TrainingToExercise {
+  training: Training!
+  exercise: Exercise!
 }
 
 type Query {
-  allUsers: [Training!]
-}
-
-input UserCreateInput {
-  email: String!
-  name: String
-  password: String
-}
-
-type Mutation {
-  createUser(data: UserCreateInput!): User!
+  user(userId: Int): User
 }

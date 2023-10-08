@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
+  userId    Int        @id @default(autoincrement())
   name      String
   email     String     @unique
   password  String
@@ -16,33 +16,39 @@ model User {
 }
 
 model Category {
-  id        Int                  @id @default(autoincrement())
-  name      Json
+  categoryId Int        @id
+  name       String
   exercises CategoryToExercise[]
 }
 
 model Exercise {
-  id         Int                  @id @default(autoincrement())
+  exerciseID Int @unique
   name       String
   img        String?
   categories CategoryToExercise[]
-  trainings  Training[]
-}
-
-model CategoryToExercise {
-  categoryId Int
-  exerciseId Int
-  category   Category @relation(fields: [categoryId], references: [id])
-  exercise   Exercise @relation(fields: [exerciseId], references: [id])
-
-  @@id([categoryId, exerciseId])
+  trainings  TrainingToExercise[]
 }
 
 model Training {
-  id         Int      @id @default(autoincrement())
-  type       String
-  userId     Int
-  user       User     @relation(fields: [userId], references: [id])
+  id        Int                  @id @default(autoincrement())
+  user      User                 @relation(fields: [id], references: [userId])
+  exercises TrainingToExercise[]
+}
+
+model CategoryToExercise {
+  categoryIdReference Int
+  exerciseIdReference Int
+  category   Category @relation(fields: [categoryIdReference], references: [categoryId])
+  exercise   Exercise @relation(fields: [exerciseIdReference], references: [exerciseID])
+
+  @@id([categoryIdReference, exerciseIdReference])
+}
+
+model TrainingToExercise {
+  training   Training @relation(fields: [trainingId], references: [id])
+  trainingId Int
+  exercise   Exercise @relation(fields: [exerciseId], references: [exerciseID])
   exerciseId Int
-  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  @@unique([trainingId, exerciseId])
 }
