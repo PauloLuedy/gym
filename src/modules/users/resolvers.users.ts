@@ -9,15 +9,17 @@ export class UserResolvers {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   @Query()
-  async user(_, @Args('userId') userId: number) {
+  async user(@Args('userId') userId: number) {
     const user = await this.prismaService.user.findUnique({
-      where: {
-        userId,
-      },
+      where: { userId },
       include: {
         trainings: {
           include: {
-            user: true,
+            exercises: {
+              include: {
+                exercise: true,
+              },
+            },
           },
         },
       },

@@ -30,8 +30,9 @@ model Exercise {
 }
 
 model Training {
-  id        Int                  @id @default(autoincrement())
-  user      User                 @relation(fields: [id], references: [userId])
+  id            Int @id @default(autoincrement())
+  userId        Int         
+  user      User                 @relation(fields: [userId], references: [userId])
   exercises TrainingToExercise[]
 }
 
@@ -47,8 +48,8 @@ model CategoryToExercise {
 model TrainingToExercise {
   training   Training @relation(fields: [trainingId], references: [id])
   trainingId Int
-  exercise   Exercise @relation(fields: [exerciseId], references: [exerciseID])
-  exerciseId Int
+  exercise   Exercise @relation(fields: [exerciseTrainigId], references: [exerciseID])
+  exerciseTrainigId Int
 
-  @@unique([trainingId, exerciseId])
+  @@unique([trainingId, exerciseTrainigId])
 }
