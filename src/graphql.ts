@@ -8,6 +8,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface CreateUserInput {
+    name?: Nullable<string>;
+    email?: Nullable<string>;
+    password?: Nullable<string>;
+}
+
 export interface User {
     userId: number;
     name?: Nullable<string>;
@@ -50,6 +56,10 @@ export interface TrainingToExercise {
 
 export interface IQuery {
     user(userId?: Nullable<number>): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export interface IMutation {
+    createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 type Nullable<T> = T | null;

@@ -1,3 +1,9 @@
+input CreateUserInput {
+  name: String
+  email: String
+  password: String
+}
+
 type User {
   userId: Int!
   name: String
@@ -40,4 +46,8 @@ type TrainingToExercise {
 
 type Query {
   user(userId: Int): User
+}
+
+type Mutation {
+  createUser(data: CreateUserInput): User
 }
