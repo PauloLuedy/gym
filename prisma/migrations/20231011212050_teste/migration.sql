@@ -45,6 +45,14 @@ CREATE TABLE "TrainingToExercise" (
     "exerciseTrainigId" INTEGER NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "TrainingToCategory" (
+    "trainingId" INTEGER NOT NULL,
+    "categoryId" INTEGER NOT NULL,
+
+    CONSTRAINT "TrainingToCategory_pkey" PRIMARY KEY ("trainingId","categoryId")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -68,3 +76,9 @@ ALTER TABLE "TrainingToExercise" ADD CONSTRAINT "TrainingToExercise_trainingId_f
 
 -- AddForeignKey
 ALTER TABLE "TrainingToExercise" ADD CONSTRAINT "TrainingToExercise_exerciseTrainigId_fkey" FOREIGN KEY ("exerciseTrainigId") REFERENCES "Exercise"("exerciseID") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TrainingToCategory" ADD CONSTRAINT "TrainingToCategory_trainingId_fkey" FOREIGN KEY ("trainingId") REFERENCES "Training"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TrainingToCategory" ADD CONSTRAINT "TrainingToCategory_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("categoryId") ON DELETE RESTRICT ON UPDATE CASCADE;

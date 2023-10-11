@@ -17,7 +17,20 @@ export class UserResolvers {
           include: {
             exercises: {
               include: {
-                exercise: true,
+                exercise: {
+                  include: {
+                    category: {
+                      include: {
+                        category: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            categories: {
+              include: {
+                category: true,
               },
             },
           },

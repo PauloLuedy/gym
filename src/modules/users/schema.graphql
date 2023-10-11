@@ -22,14 +22,14 @@ type Exercise {
   exerciseID: Int!
   name: String
   img: String
-  categories: [CategoryToExercise!]
-  trainings: [TrainingToExercise!]
+  category: [CategoryToExercise!]
 }
 
 type Training {
   id: Int!
   user: User!
   exercises: [TrainingToExercise!]
+  categories: [TrainingToCategory]
 }
 
 type CategoryToExercise {
@@ -42,6 +42,11 @@ type CategoryToExercise {
 type TrainingToExercise {
   training: Training!
   exercise: Exercise!
+}
+
+type TrainingToCategory {
+  training: Training!
+  category: Category!
 }
 
 type Query {

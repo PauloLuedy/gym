@@ -32,14 +32,14 @@ export interface Exercise {
     exerciseID: number;
     name?: Nullable<string>;
     img?: Nullable<string>;
-    categories?: Nullable<CategoryToExercise[]>;
-    trainings?: Nullable<TrainingToExercise[]>;
+    category?: Nullable<CategoryToExercise[]>;
 }
 
 export interface Training {
     id: number;
     user: User;
     exercises?: Nullable<TrainingToExercise[]>;
+    categories?: Nullable<Nullable<TrainingToCategory>[]>;
 }
 
 export interface CategoryToExercise {
@@ -52,6 +52,11 @@ export interface CategoryToExercise {
 export interface TrainingToExercise {
     training: Training;
     exercise: Exercise;
+}
+
+export interface TrainingToCategory {
+    training: Training;
+    category: Category;
 }
 
 export interface IQuery {

@@ -19,13 +19,14 @@ model Category {
   categoryId Int        @id
   name       String
   exercises CategoryToExercise[]
+  trainings   TrainingToCategory[]
 }
 
 model Exercise {
   exerciseID Int @unique
   name       String
   img        String?
-  categories CategoryToExercise[]
+  category CategoryToExercise[]
   trainings  TrainingToExercise[]
 }
 
@@ -34,6 +35,7 @@ model Training {
   userId        Int         
   user      User                 @relation(fields: [userId], references: [userId])
   exercises TrainingToExercise[]
+  categories  TrainingToCategory[]
 }
 
 model CategoryToExercise {
@@ -52,4 +54,13 @@ model TrainingToExercise {
   exerciseTrainigId Int
 
   @@unique([trainingId, exerciseTrainigId])
+}
+
+model TrainingToCategory {
+  training    Training @relation(fields: [trainingId], references: [id])
+  trainingId  Int
+  category    Category @relation(fields: [categoryId], references: [categoryId])
+  categoryId  Int
+
+  @@id([trainingId, categoryId])
 }
