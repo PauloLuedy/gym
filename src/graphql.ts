@@ -8,46 +8,82 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export interface UserUniqueInput {
-    id?: Nullable<number>;
-    email?: Nullable<string>;
-}
-
-export interface UserCreateInput {
-    email: string;
+export interface CreateUserInput {
     name?: Nullable<string>;
+    email?: Nullable<string>;
     password?: Nullable<string>;
 }
 
-export interface User {
-    id: number;
-    email: string;
+export interface CreateTrainingInput {
+    userId?: Nullable<number>;
+    exercises?: Nullable<Nullable<CreateExerciseInput>[]>;
+    categories?: Nullable<Nullable<CreateCategoryToExerciseInput>[]>;
+}
+
+export interface CreateExerciseInput {
+    exerciseID?: Nullable<number>;
     name?: Nullable<string>;
+    img?: Nullable<string>;
+    category?: Nullable<CreateCategoryToExerciseInput>;
+}
+
+export interface CreateCategoryToExerciseInput {
+    categoryIdReference?: Nullable<number>;
+    exerciseIdReference?: Nullable<number>;
+}
+
+export interface User {
+    userId: number;
+    name?: Nullable<string>;
+    email: string;
+    password: string;
+    trainings?: Nullable<Training[]>;
 }
 
 export interface Category {
-    id: number;
-    name: string;
+    categoryId: number;
+    name?: Nullable<string>;
+    exercises?: Nullable<CategoryToExercise[]>;
 }
 
 export interface Exercise {
-    id: number;
-    name: string;
+    exerciseID: number;
+    name?: Nullable<string>;
     img?: Nullable<string>;
-    category?: Nullable<Category>;
+    category?: Nullable<CategoryToExercise[]>;
 }
 
 export interface Training {
-    user?: Nullable<User>;
-    exercise?: Nullable<Exercise>;
+    id: number;
+    user: User;
+    exercises?: Nullable<TrainingToExercise[]>;
+    categories?: Nullable<Nullable<TrainingToCategory>[]>;
+}
+
+export interface CategoryToExercise {
+    categoryIdReference: number;
+    exerciseIdReference: number;
+    category: Category;
+    exercise: Exercise;
+}
+
+export interface TrainingToExercise {
+    training: Training;
+    exercise: Exercise;
+}
+
+export interface TrainingToCategory {
+    training: Training;
+    category: Category;
 }
 
 export interface IQuery {
-    allUsers(): Nullable<Training[]> | Promise<Nullable<Training[]>>;
+    user(userId?: Nullable<number>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export interface IMutation {
-    createUser(data: UserCreateInput): User | Promise<User>;
+    createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
+    createTraining(data?: Nullable<CreateTrainingInput>): Nullable<Training> | Promise<Nullable<Training>>;
 }
 
 type Nullable<T> = T | null;

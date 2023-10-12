@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
+  userId    Int        @id @default(autoincrement())
   name      String
   email     String     @unique
   password  String
@@ -16,25 +16,51 @@ model User {
 }
 
 model Category {
-  id        Int        @id @default(autoincrement())
-  name      Json
-  exercises Exercise[]
+  categoryId Int        @id
+  name       String
+  exercises CategoryToExercise[]
+  trainings   TrainingToCategory[]
 }
 
 model Exercise {
-  id         Int        @id @default(autoincrement())
+  exerciseID Int @unique
   name       String
   img        String?
-  categoryId Int
-  category   Category   @relation(fields: [categoryId], references: [id])
-  trainings  Training[]
+  category CategoryToExercise[]
+  trainings  TrainingToExercise[]
 }
 
 model Training {
-  id         Int      @id @default(autoincrement())
-  type       String
-  userId     Int
-  user       User     @relation(fields: [userId], references: [id])
-  exerciseId Int
-  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  id            Int @id @default(autoincrement())
+  userId        Int         
+  user      User                 @relation(fields: [userId], references: [userId])
+  exercises TrainingToExercise[]
+  categories  TrainingToCategory[]
+}
+
+model CategoryToExercise {
+  categoryIdReference Int
+  exerciseIdReference Int
+  category   Category @relation(fields: [categoryIdReference], references: [categoryId])
+  exercise   Exercise @relation(fields: [exerciseIdReference], references: [exerciseID])
+
+  @@id([categoryIdReference, exerciseIdReference])
+}
+
+model TrainingToExercise {
+  training   Training @relation(fields: [trainingId], references: [id])
+  trainingId Int
+  exercise   Exercise @relation(fields: [exerciseTrainigId], references: [exerciseID])
+  exerciseTrainigId Int
+
+  @@unique([trainingId, exerciseTrainigId])
+}
+
+model TrainingToCategory {
+  training    Training @relation(fields: [trainingId], references: [id])
+  trainingId  Int
+  category    Category @relation(fields: [categoryId], references: [categoryId])
+  categoryId  Int
+
+  @@id([trainingId, categoryId])
 }

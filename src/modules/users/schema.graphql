@@ -1,42 +1,76 @@
-input UserUniqueInput {
-  id: Float
+input CreateUserInput {
+  name: String
   email: String
+  password: String
+}
+input CreateTrainingInput {
+  userId: Int
+  exercises: [CreateExerciseInput] # Usando um novo tipo de entrada para Exercise
+  categories: [CreateCategoryToExerciseInput] # Usando um novo tipo de entrada para CategoryToExercise
+}
+
+input CreateExerciseInput {
+  exerciseID: Int
+  name: String
+  img: String
+  category: CreateCategoryToExerciseInput
+}
+
+input CreateCategoryToExerciseInput {
+  categoryIdReference: Int
+  exerciseIdReference: Int
 }
 
 type User {
-  id: Int!
-  email: String!
+  userId: Int!
   name: String
+  email: String!
+  password: String!
+  trainings: [Training!]
 }
 
 type Category {
-  id: Int!
-  name: String!
+  categoryId: Int!
+  name: String
+  exercises: [CategoryToExercise!]
 }
 
 type Exercise {
-  id: Int!
-  name: String!
+  exerciseID: Int!
+  name: String
   img: String
-  category: Category
+  category: [CategoryToExercise!]
 }
 
 type Training {
-  user: User
-  exercise: Exercise
+  id: Int!
+  user: User!
+  exercises: [TrainingToExercise!]
+  categories: [TrainingToCategory]
+}
+
+type CategoryToExercise {
+  categoryIdReference: Int!
+  exerciseIdReference: Int!
+  category: Category!
+  exercise: Exercise!
+}
+
+type TrainingToExercise {
+  training: Training!
+  exercise: Exercise!
+}
+
+type TrainingToCategory {
+  training: Training!
+  category: Category!
 }
 
 type Query {
-  allUsers: [Training!]
+  user(userId: Int): User
 }
-
-input UserCreateInput {
-  email: String!
-  name: String
-  password: String
-}
-
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
+  createUser(data: CreateUserInput): User
+  createTraining(data: CreateTrainingInput): Training
 }
