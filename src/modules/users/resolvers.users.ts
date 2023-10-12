@@ -47,6 +47,7 @@ export class UserResolvers {
 
   @Mutation()
   async createUser(_, args) {
+    console.log('aquiii', args.data);
     const verifySameEmail = await this.prismaService.user.findFirst({
       where: {
         email: args.data.email,
@@ -74,5 +75,50 @@ export class UserResolvers {
     }
   }
 
-  async createTraine(_, args) {}
+  @Mutation()
+  async createTraining(_, args) {
+    console.log('aquiii', args.data);
+    const verifyUser = await this.prismaService.user.findUnique({
+      where: {
+        userId: args.data.userId,
+      },
+    });
+    if (!verifyUser) {
+      throw new Error(`Usuário com ID ${args.data.userId} não encontrado`);
+    }
+
+    const newTraining = await this.prismaService.training.create({
+      data: {
+        userId: args.data.userId,
+      },
+    });
+
+    for (const exercise of args.data.exercises) {
+      await this.prismaService.trainingToExercise.create({
+        data: {
+          //@ts-ignore
+          training: newTraining.id,
+          trainingId: newTraining.id,
+          exerciseTrainigId: exercise.exerciseId,
+        },
+      });
+    }
+
+    for (const category of args.data.categories) {
+      await this.prismaService.trainingToCategory.create({
+        data: {
+          trainingId: newTraining.id,
+          categoryId: category.categoryId,
+        },
+      });
+    }
+
+    const training = await this.prismaService.training.findUnique({
+      where: {
+        id: newTraining.id,
+      },
+    });
+
+    return training;
+  }
 }

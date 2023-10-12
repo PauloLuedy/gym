@@ -3,6 +3,23 @@ input CreateUserInput {
   email: String
   password: String
 }
+input CreateTrainingInput {
+  userId: Int
+  exercises: [CreateExerciseInput] # Usando um novo tipo de entrada para Exercise
+  categories: [CreateCategoryToExerciseInput] # Usando um novo tipo de entrada para CategoryToExercise
+}
+
+input CreateExerciseInput {
+  exerciseID: Int
+  name: String
+  img: String
+  category: CreateCategoryToExerciseInput
+}
+
+input CreateCategoryToExerciseInput {
+  categoryIdReference: Int
+  exerciseIdReference: Int
+}
 
 type User {
   userId: Int!
@@ -55,4 +72,5 @@ type Query {
 
 type Mutation {
   createUser(data: CreateUserInput): User
+  createTraining(data: CreateTrainingInput): Training
 }
