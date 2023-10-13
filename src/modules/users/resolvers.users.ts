@@ -1,12 +1,13 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { Inject, ValidationPipe } from '@nestjs/common';
 import 'reflect-metadata';
 import { PrismaService } from '../../prisma.service';
-import { Inject } from '@nestjs/common';
+import { UserDTO } from './DTOs/user';
 
 @Resolver()
 export class UserResolvers {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) { }
 
   @Query()
   async user(@Args('userId') userId: number) {
@@ -46,54 +47,39 @@ export class UserResolvers {
   }
 
   @Mutation()
-  async createUser(_, args) {
-    console.log('aquiii', args.data);
+  async createUser(@Args('data', new ValidationPipe()) input: UserDTO) {
+
     const verifySameEmail = await this.prismaService.user.findFirst({
-      where: {
-        email: args.data.email,
-      },
+      where: { email: input.email }
     });
 
     if (verifySameEmail) {
-      console.log('simmm');
-      throw new Error('Usuario ja cadastrado');
+      throw new Error('Esse Usuário já esta cadastrado');
     }
 
-    if (!args.data.email || !args.data.password || !args.data.name) {
-      throw new Error('e necessario preencher email-senha e nome');
-    }
-
-    if (!verifySameEmail) {
-      const addUser = await this.prismaService.user.create({
-        data: {
-          name: args.data.name,
-          email: args.data.email,
-          password: args.data.password,
-        },
-      });
-      return addUser;
-    }
+    const addUser = await this.prismaService.user.create({ data: { ...input } });
+    return addUser;
   }
 
   @Mutation()
-  async createTraining(_, args) {
-    console.log('aquiii', args.data);
+  async createTraining(_, { data }) {
     const verifyUser = await this.prismaService.user.findUnique({
       where: {
-        userId: args.data.userId,
+        userId: data.userId,
       },
     });
+
     if (!verifyUser) {
-      throw new Error(`Usuário com ID ${args.data.userId} não encontrado`);
+      throw new Error(`Usuário com ID ${data.userId} não encontrado`);
     }
 
     const newTraining = await this.prismaService.training.create({
       data: {
-        userId: args.data.userId,
+        userId: data.userId,
       },
     });
 
-    for (const exercise of args.data.exercises) {
+    for (const exercise of data.exercises) {
       await this.prismaService.trainingToExercise.create({
         data: {
           //@ts-ignore
@@ -104,7 +90,7 @@ export class UserResolvers {
       });
     }
 
-    for (const category of args.data.categories) {
+    for (const category of data.categories) {
       await this.prismaService.trainingToCategory.create({
         data: {
           trainingId: newTraining.id,
