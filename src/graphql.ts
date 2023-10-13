@@ -9,9 +9,9 @@
 /* eslint-disable */
 
 export interface CreateUserInput {
-    name?: Nullable<string>;
-    email?: Nullable<string>;
-    password?: Nullable<string>;
+    name: string;
+    email: string;
+    password: string;
 }
 
 export interface CreateTrainingInput {
