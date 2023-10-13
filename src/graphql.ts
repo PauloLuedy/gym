@@ -15,6 +15,7 @@ export interface CreateUserInput {
 }
 
 export interface CreateTrainingInput {
+    id?: Nullable<number>;
     userId?: Nullable<number>;
     exercises?: Nullable<Nullable<CreateExerciseInput>[]>;
     categories?: Nullable<Nullable<CreateCategoryToExerciseInput>[]>;
@@ -83,7 +84,7 @@ export interface IQuery {
 
 export interface IMutation {
     createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
-    createTraining(data?: Nullable<CreateTrainingInput>): Nullable<Training> | Promise<Nullable<Training>>;
+    createTraining(data?: Nullable<CreateTrainingInput>): Nullable<string> | Promise<Nullable<string>>;
 }
 
 type Nullable<T> = T | null;

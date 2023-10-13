@@ -7,7 +7,7 @@ import { UserDTO } from './DTOs/user';
 
 @Resolver()
 export class UserResolvers {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) { }
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   @Query()
   async user(@Args('userId') userId: number) {
@@ -48,16 +48,17 @@ export class UserResolvers {
 
   @Mutation()
   async createUser(@Args('data', new ValidationPipe()) input: UserDTO) {
-
     const verifySameEmail = await this.prismaService.user.findFirst({
-      where: { email: input.email }
+      where: { email: input.email },
     });
 
     if (verifySameEmail) {
       throw new Error('Esse Usuário já esta cadastrado');
     }
 
-    const addUser = await this.prismaService.user.create({ data: { ...input } });
+    const addUser = await this.prismaService.user.create({
+      data: { ...input },
+    });
     return addUser;
   }
 
@@ -82,10 +83,8 @@ export class UserResolvers {
     for (const exercise of data.exercises) {
       await this.prismaService.trainingToExercise.create({
         data: {
-          //@ts-ignore
-          training: newTraining.id,
           trainingId: newTraining.id,
-          exerciseTrainigId: exercise.exerciseId,
+          exerciseTrainigId: exercise.exerciseID,
         },
       });
     }
@@ -94,17 +93,11 @@ export class UserResolvers {
       await this.prismaService.trainingToCategory.create({
         data: {
           trainingId: newTraining.id,
-          categoryId: category.categoryId,
+          categoryId: category.categoryIdReference,
         },
       });
     }
 
-    const training = await this.prismaService.training.findUnique({
-      where: {
-        id: newTraining.id,
-      },
-    });
-
-    return training;
+    return newTraining ? 'Sucesso' : 'Algo deu errado';
   }
 }
