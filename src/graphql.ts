@@ -15,7 +15,6 @@ export interface CreateUserInput {
 }
 
 export interface CreateTrainingInput {
-    id?: Nullable<number>;
     userId?: Nullable<number>;
     exercises?: Nullable<Nullable<CreateExerciseInput>[]>;
     categories?: Nullable<Nullable<CreateCategoryToExerciseInput>[]>;
