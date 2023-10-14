@@ -1,8 +1,9 @@
 input CreateUserInput {
-  name: String
-  email: String
-  password: String
+  name: String!
+  email: String!
+  password: String!
 }
+
 input CreateTrainingInput {
   userId: Int
   exercises: [CreateExerciseInput] # Usando um novo tipo de entrada para Exercise
