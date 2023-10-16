@@ -4,10 +4,10 @@ import { PrismaService } from '../../prisma.service';
 
 @Injectable()
 export class TrainingService {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) { }
 
   @Mutation()
-  public async createTraining(data) {
+  public async createTrainings(data) {
     const verifyUser = await this.prismaService.user.findUnique({
       where: {
         userId: data.userId,

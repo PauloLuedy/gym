@@ -1,13 +1,12 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Resolver } from '@nestjs/graphql';
 
-import { Inject, ValidationPipe } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import 'reflect-metadata';
 import { PrismaService } from '../../prisma.service';
-import { UserDTO } from './DTOs/user';
 
 @Resolver()
 export class UserService {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) { }
 
   async user(userId) {
     const user = await this.prismaService.user.findUnique({
@@ -45,9 +44,7 @@ export class UserService {
     return user;
   }
 
-  @Mutation()
   async createUser(input) {
-    console.log('Dragao', input);
     const verifySameEmail = await this.prismaService.user.findFirst({
       where: { email: input.email },
     });

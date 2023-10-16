@@ -35,7 +35,6 @@ export interface CreateCategoryToExerciseInput {
 export interface IMutation {
     createTrainings(data?: Nullable<CreateTrainingInput>): Nullable<string> | Promise<Nullable<string>>;
     createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
-    createTraining(data?: Nullable<CreateTrainingInput>): Nullable<string> | Promise<Nullable<string>>;
 }
 
 export interface User {
