@@ -1,0 +1,27 @@
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input CreateTrainingInput {
+  userId: Int
+  exercises: [CreateExerciseInput]
+  categories: [CreateCategoryToExerciseInput]
+}
+
+input CreateExerciseInput {
+  exerciseID: Int
+  name: String
+  img: String
+  category: CreateCategoryToExerciseInput
+}
+
+input CreateCategoryToExerciseInput {
+  categoryIdReference: Int
+  exerciseIdReference: Int
+}
+
+type Mutation {
+  createTrainings(data: CreateTrainingInput): String
+}

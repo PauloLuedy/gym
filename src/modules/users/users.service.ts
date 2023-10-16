@@ -9,8 +9,7 @@ import { UserDTO } from './DTOs/user';
 export class UserService {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  @Query()
-  async user(userId: number) {
+  async user(userId) {
     const user = await this.prismaService.user.findUnique({
       where: { userId },
       include: {
@@ -47,7 +46,8 @@ export class UserService {
   }
 
   @Mutation()
-  async createUser(@Args('data', new ValidationPipe()) input: UserDTO) {
+  async createUser(input) {
+    console.log('Dragao', input);
     const verifySameEmail = await this.prismaService.user.findFirst({
       where: { email: input.email },
     });
