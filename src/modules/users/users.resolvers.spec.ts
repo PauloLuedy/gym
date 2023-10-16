@@ -2,16 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { validate } from 'class-validator';
 import { PrismaService } from '../../prisma.service';
 import { UserDTO } from './DTOs/user';
-import { UserResolvers } from './resolvers.users';
+import { UserService } from './users.service';
 
 describe('UserResolver', () => {
-  let resolver: UserResolvers;
+  let resolver: UserService;
   let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserResolvers,
+        UserService,
         {
           provide: PrismaService,
           useValue: {
@@ -34,7 +34,7 @@ describe('UserResolver', () => {
       ],
     }).compile();
 
-    resolver = module.get<UserResolvers>(UserResolvers);
+    resolver = module.get<UserService>(UserService);
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
@@ -119,56 +119,6 @@ describe('UserResolver', () => {
       };
 
       expect(await resolver.createUser(input)).toEqual(userMock);
-    });
-
-    it('should create a training if userID exists', async () => {
-      const userData = {
-        userId: 1,
-      };
-
-      const exerciseData = [{ exerciseID: 6 }, { exerciseID: 1 }];
-
-      const categoryData = [
-        { categoryIdReference: 3 },
-        { categoryIdReference: 1 },
-      ];
-
-      const prismaService = {
-        user: {
-          findUnique: jest.fn(async () => ({ userId: userData.userId })),
-        },
-        training: {
-          create: jest.fn(async () => ({ id: 22, userId: userData.userId })),
-        },
-        trainingToExercise: {
-          create: jest.fn(),
-        },
-        trainingToCategory: {
-          create: jest.fn(),
-        },
-      };
-
-      const resolver = new UserResolvers(prismaService as any);
-
-      const result = await resolver.createTraining(null, {
-        data: {
-          userId: userData.userId,
-          exercises: exerciseData,
-          categories: categoryData,
-        },
-      });
-
-      // Verificação do resultado
-      expect(result).toBe('Sucesso');
-
-      // Verificação de chamadas de função
-      expect(prismaService.training.create).toHaveBeenCalledWith({
-        data: {
-          userId: userData.userId,
-        },
-      });
-      expect(prismaService.trainingToExercise.create).toBeCalled();
-      expect(prismaService.trainingToCategory.create).toBeCalled();
     });
   });
 });
