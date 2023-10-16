@@ -1,12 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Mutation } from '@nestjs/graphql';
 import { PrismaService } from '../../prisma.service';
 
 @Injectable()
 export class TrainingService {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) { }
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  @Mutation()
   public async createTrainings(data) {
     const verifyUser = await this.prismaService.user.findUnique({
       where: {

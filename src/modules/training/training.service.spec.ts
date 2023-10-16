@@ -81,7 +81,7 @@ describe('Start training test', () => {
         },
       };
 
-      const result = await resolver.createTraining(args.data);
+      const result = await resolver.createTrainings(args.data);
 
       expect(result).toBe('Sucesso');
     });
