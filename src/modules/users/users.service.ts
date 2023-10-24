@@ -6,7 +6,7 @@ import { PrismaService } from '../../prisma.service';
 
 @Resolver()
 export class UserService {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) { }
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   async user(userId) {
     const user = await this.prismaService.user.findUnique({
@@ -41,7 +41,7 @@ export class UserService {
       throw new Error(`Usuário com ID ${userId} não encontrado`);
     }
 
-    return user;
+    return { ...user, password: '***' };
   }
 
   async createUser(input) {
@@ -53,9 +53,18 @@ export class UserService {
       throw new Error('Esse Usuário já esta cadastrado');
     }
 
-    const addUser = await this.prismaService.user.create({
+    const createdUser = await this.prismaService.user.create({
       data: { ...input },
     });
-    return addUser;
+
+    return { ...createdUser, password: '***' };
+  }
+
+  async findByEmail(email: string) {
+    return this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
   }
 }

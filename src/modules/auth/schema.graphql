@@ -1,0 +1,48 @@
+type Category {
+  categoryId: Int!
+  name: String
+  exercises: [CategoryToExercise!]
+}
+
+type Exercise {
+  exerciseID: Int!
+  name: String
+  img: String
+  category: [CategoryToExercise!]
+}
+
+type User {
+  userId: Int!
+  name: String
+  email: String!
+  password: String!
+  trainings: [Training!]
+}
+
+type Training {
+  id: Int!
+  user: User!
+  exercises: [TrainingToExercise!]
+  categories: [TrainingToCategory]
+}
+
+type CategoryToExercise {
+  categoryIdReference: Int!
+  exerciseIdReference: Int!
+  category: Category!
+  exercise: Exercise!
+}
+
+type TrainingToExercise {
+  training: Training!
+  exercise: Exercise!
+}
+
+type TrainingToCategory {
+  training: Training!
+  category: Category!
+}
+
+type Mutation {
+  login(email: String, password: String): User
+}

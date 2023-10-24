@@ -32,19 +32,6 @@ export interface CreateCategoryToExerciseInput {
     exerciseIdReference?: Nullable<number>;
 }
 
-export interface IMutation {
-    createTrainings(data?: Nullable<CreateTrainingInput>): Nullable<string> | Promise<Nullable<string>>;
-    createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
-}
-
-export interface User {
-    userId: number;
-    name?: Nullable<string>;
-    email: string;
-    password: string;
-    trainings?: Nullable<Training[]>;
-}
-
 export interface Category {
     categoryId: number;
     name?: Nullable<string>;
@@ -56,6 +43,14 @@ export interface Exercise {
     name?: Nullable<string>;
     img?: Nullable<string>;
     category?: Nullable<CategoryToExercise[]>;
+}
+
+export interface User {
+    userId: number;
+    name?: Nullable<string>;
+    email: string;
+    password: string;
+    trainings?: Nullable<Training[]>;
 }
 
 export interface Training {
@@ -80,6 +75,12 @@ export interface TrainingToExercise {
 export interface TrainingToCategory {
     training: Training;
     category: Category;
+}
+
+export interface IMutation {
+    login(email?: Nullable<string>, password?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
+    createTrainings(data?: Nullable<CreateTrainingInput>): Nullable<string> | Promise<Nullable<string>>;
+    createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export interface IQuery {
