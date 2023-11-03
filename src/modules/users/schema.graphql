@@ -73,5 +73,4 @@ type Query {
 
 type Mutation {
   createUser(data: CreateUserInput): User
-  createTraining(data: CreateTrainingInput): Training
 }
