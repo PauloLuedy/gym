@@ -10,10 +10,10 @@ import * as bcrypt from 'bcrypt';
 export class UserResolvers {
   constructor(private readonly userService: UserService) {}
 
-  /* @Query()
-  async findByEmail(@Args() userId: number) {
-    return await this.userService.user(userId);
-  } */
+  @Query()
+  async findByEmail(@Args('email') email: string) {
+    return await this.userService.findByEmail(email);
+  }
 
   @Query()
   async user(@Args({ name: 'userId', type: () => Int }) userId: number) {

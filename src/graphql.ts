@@ -77,14 +77,19 @@ export interface TrainingToCategory {
     category: Category;
 }
 
+export interface Token {
+    acess_tokem?: Nullable<string>;
+}
+
 export interface IMutation {
-    login(email?: Nullable<string>, password?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
+    login(email?: Nullable<string>, password?: Nullable<string>): Nullable<Token> | Promise<Nullable<Token>>;
     createTrainings(data?: Nullable<CreateTrainingInput>): Nullable<string> | Promise<Nullable<string>>;
     createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export interface IQuery {
     user(userId?: Nullable<number>): Nullable<User> | Promise<Nullable<User>>;
+    findByEmail(email?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 type Nullable<T> = T | null;

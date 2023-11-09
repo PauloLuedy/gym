@@ -21,6 +21,6 @@ import { AuthModule } from './modules/auth/auth.module';
     TrainingModule,
     AuthModule,
   ],
-  providers: [PrismaService, UserModule, TrainingModule],
+  providers: [PrismaService, UserModule, TrainingModule, AuthModule],
 })
 export class AppModule {}
