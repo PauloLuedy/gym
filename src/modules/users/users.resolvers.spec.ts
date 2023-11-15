@@ -45,9 +45,10 @@ describe('UserResolver', () => {
   describe('createUser', () => {
     it('should validate and return no errors with valid data', async () => {
       const dto = new UserDTO();
+      dto.userId = 54;
       dto.name = 'John Doe';
       dto.email = 'john@example.com';
-      dto.password = 'securepassword';
+      dto.password = 'S5ecurep@ssword';
 
       const validationErrors = await validate(dto);
       expect(validationErrors.length).toBe(0);
@@ -63,10 +64,10 @@ describe('UserResolver', () => {
       const validationErrors = await validate(dto);
       expect(validationErrors.length).toBeGreaterThan(0);
       expect(validationErrors[0]?.constraints?.isNotEmpty).toEqual(
-        'Name should not be empty',
+        'O nome não pode estar vazio',
       );
       expect(validationErrors[0]?.constraints?.isString).toEqual(
-        'Show be a text',
+        'Deve ser um texto',
       );
     });
 
@@ -92,6 +93,7 @@ describe('UserResolver', () => {
       });
 
       const input: UserDTO = {
+        userId: 1,
         name: 'Name_User',
         password: 'password_User',
         email: 'Test@gmail.com',
@@ -105,7 +107,7 @@ describe('UserResolver', () => {
     it('should create a user if email is unique', async () => {
       const userMock = {
         name: 'Name_User',
-        password: 'password_User',
+        password: '***',
         email: 'Test@gmail.com',
         userId: 1,
       };
@@ -113,8 +115,9 @@ describe('UserResolver', () => {
       jest.spyOn(prismaService.user, 'create').mockResolvedValueOnce(userMock);
 
       const input: UserDTO = {
+        userId: 1,
         name: 'Name_User',
-        password: 'password_User',
+        password: '***',
         email: 'Test@gmail.com',
       };
 

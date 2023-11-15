@@ -6,6 +6,8 @@ import { UserModule } from './modules/users/users.module';
 import { PrismaService } from './prisma.service';
 import { TrainingModule } from './modules/training/training.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { GqlAuthGuard } from './modules/auth/guards/gql-auth.guard';
 
 @Module({
   imports: [
@@ -21,6 +23,15 @@ import { AuthModule } from './modules/auth/auth.module';
     TrainingModule,
     AuthModule,
   ],
-  providers: [PrismaService, UserModule, TrainingModule, AuthModule],
+  providers: [
+    PrismaService,
+    UserModule,
+    TrainingModule,
+    AuthModule,
+    {
+      provide: APP_GUARD,
+      useClass: GqlAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

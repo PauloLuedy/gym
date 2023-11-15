@@ -18,6 +18,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     email: string;
     sub: string;
   }): Promise<UserDTO | null> {
-    return await this.userService.findByEmail(validationPayload.email);
+    const user = await this.userService.findByEmail(validationPayload.email);
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return user;
   }
 }
