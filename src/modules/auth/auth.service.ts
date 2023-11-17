@@ -44,7 +44,7 @@ export class AuthService {
 
     return {
       ...userAuth,
-      acess_tokem: this.jwtService.sign(payload),
+      acess_tokem: tokem,
     };
   }
 

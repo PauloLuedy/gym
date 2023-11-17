@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TrainingResolver } from './training.resolver';
-import { TrainingService } from './training.service';
-import { PrismaService } from '../../prisma.service';
+import { TrainingResolver } from '../../../modules/training/training.resolver';
+import { TrainingService } from '../../../modules/training/training.service';
+import { PrismaService } from '../../../prisma.service';
 
 describe('Start training test', () => {
   let prismaService: PrismaService;
