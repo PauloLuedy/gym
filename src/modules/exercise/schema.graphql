@@ -1,0 +1,31 @@
+type Category {
+  categoryID: Int!
+  name: String
+  exercises: [CategoryToExercise!]
+}
+
+type Exercise {
+  exerciseID: Int!
+  name: String
+  img: String
+  category: [CategoryToExercise!]
+}
+
+type User {
+  userID: Int!
+  name: String
+  email: String!
+  password: String!
+  trainings: [Training!]
+}
+
+type CategoryToExercise {
+  categoryIdReference: Int!
+  exerciseIdReference: Int!
+  category: Category!
+  exercise: Exercise!
+}
+
+type Query {
+  getExercises(categoryID: Int): [Exercise]
+}

@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { validate } from 'class-validator';
-import { PrismaService } from '../../prisma.service';
-import { UserDTO } from './DTOs/user';
-import { UserService } from './users.service';
+import { PrismaService } from '../../../prisma.service';
+import { UserDTO } from '../../../modules/users/DTOs/user';
+import { UserService } from '../../../modules/users/users.service';
 
-describe('UserResolver', () => {
-  let resolver: UserService;
+describe('UseService', () => {
+  let userService: UserService;
   let prismaService: PrismaService;
 
   beforeEach(async () => {
@@ -19,9 +19,11 @@ describe('UserResolver', () => {
               findFirst: jest.fn(),
               create: jest.fn(),
               findUnique: jest.fn(),
+              findMany: jest.fn(),
             },
             training: {
               create: jest.fn(),
+              findMany: jest.fn(),
             },
             trainingToExercise: {
               create: jest.fn(),
@@ -34,20 +36,21 @@ describe('UserResolver', () => {
       ],
     }).compile();
 
-    resolver = module.get<UserService>(UserService);
+    userService = module.get<UserService>(UserService);
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
-    expect(resolver).toBeDefined();
+    expect(userService).toBeDefined();
   });
 
   describe('createUser', () => {
     it('should validate and return no errors with valid data', async () => {
       const dto = new UserDTO();
+      dto.userId = 54;
       dto.name = 'John Doe';
       dto.email = 'john@example.com';
-      dto.password = 'securepassword';
+      dto.password = 'S5ecurep@ssword';
 
       const validationErrors = await validate(dto);
       expect(validationErrors.length).toBe(0);
@@ -63,10 +66,10 @@ describe('UserResolver', () => {
       const validationErrors = await validate(dto);
       expect(validationErrors.length).toBeGreaterThan(0);
       expect(validationErrors[0]?.constraints?.isNotEmpty).toEqual(
-        'Name should not be empty',
+        'O nome não pode estar vazio',
       );
       expect(validationErrors[0]?.constraints?.isString).toEqual(
-        'Show be a text',
+        'Deve ser um texto',
       );
     });
 
@@ -92,12 +95,13 @@ describe('UserResolver', () => {
       });
 
       const input: UserDTO = {
+        userId: 1,
         name: 'Name_User',
         password: 'password_User',
         email: 'Test@gmail.com',
       };
 
-      await expect(resolver.createUser(input)).rejects.toThrow(
+      await expect(userService.createUser(input)).rejects.toThrow(
         'Esse Usuário já esta cadastrado',
       );
     });
@@ -105,7 +109,7 @@ describe('UserResolver', () => {
     it('should create a user if email is unique', async () => {
       const userMock = {
         name: 'Name_User',
-        password: 'password_User',
+        password: '***',
         email: 'Test@gmail.com',
         userId: 1,
       };
@@ -113,12 +117,38 @@ describe('UserResolver', () => {
       jest.spyOn(prismaService.user, 'create').mockResolvedValueOnce(userMock);
 
       const input: UserDTO = {
+        userId: 1,
         name: 'Name_User',
-        password: 'password_User',
+        password: '***',
         email: 'Test@gmail.com',
       };
 
-      expect(await resolver.createUser(input)).toEqual(userMock);
+      expect(await userService.createUser(input)).toEqual(userMock);
+    });
+
+    test('Should get an user by userId', async () => {
+      const userMock = {
+        name: 'Name_User',
+        password: '***',
+        email: 'Test@gmail.com',
+        userId: 1,
+      };
+      jest
+        .spyOn(prismaService.user, 'findUnique')
+        .mockResolvedValueOnce(userMock);
+
+      const result = await userService.user(userMock.userId);
+      expect(result.userId).toEqual(userMock.userId);
+      expect(result.password).toEqual('***');
+    });
+
+    it('should throw an error if user is not found', async () => {
+      const userId = 'nonexistentUserId';
+      prismaService.user.findUnique(null);
+
+      await expect(userService.user(userId)).rejects.toThrowError(
+        `Usuário com ID ${userId} não encontrado`,
+      );
     });
   });
 });

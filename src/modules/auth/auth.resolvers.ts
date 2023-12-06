@@ -1,23 +1,18 @@
-import {
-  HttpCode,
-  HttpStatus,
-  Inject,
-  Injectable,
-  UseGuards,
-} from '@nestjs/common';
-import { Mutation, Resolver } from '@nestjs/graphql';
+import { Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
+
+import { UserDTO } from '../users/DTOs/user';
 import { AuthService } from './auth.service';
-import { PrismaService } from 'src/prisma.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { IsPublic } from './decorators/is-public.decorator';
 
+@Controller()
 export class AuthResolver {
-  constructor(private readonly useAuthService: AuthService) {}
-
-  @Mutation()
+  constructor(private readonly authService: AuthService) {}
+  @IsPublic()
   @UseGuards(LocalAuthGuard)
-  async login(email: string, password: string) {
-    const user = await this.useAuthService.validateUser(email, password);
-
-    return user;
+  @Post('login')
+  login(@Req() req: Request): Promise<{ acess_tokem: string }> {
+    return this.authService.login(req.user as UserDTO);
   }
 }
