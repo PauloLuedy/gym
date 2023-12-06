@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolvers';
 import { UserService } from '../users/users.service';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../../prisma.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { UserModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';

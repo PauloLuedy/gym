@@ -8,6 +8,20 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface TrainingInput {
+    userID?: Nullable<number>;
+    exercises?: Nullable<Nullable<CreateExerciseInputTraining>[]>;
+    categories?: Nullable<Nullable<CreateCategoryInputTraining>[]>;
+}
+
+export interface CreateExerciseInputTraining {
+    exerciseID?: Nullable<number>;
+}
+
+export interface CreateCategoryInputTraining {
+    categoryID?: Nullable<number>;
+}
+
 export interface CreateUserInput {
     name: string;
     email: string;
@@ -36,6 +50,7 @@ export interface Category {
     categoryId: number;
     name?: Nullable<string>;
     exercises?: Nullable<CategoryToExercise[]>;
+    categoryID: number;
 }
 
 export interface Exercise {
@@ -51,6 +66,7 @@ export interface User {
     email: string;
     password: string;
     trainings?: Nullable<Training[]>;
+    userID: number;
 }
 
 export interface Training {
@@ -83,11 +99,12 @@ export interface Token {
 
 export interface IMutation {
     login(email?: Nullable<string>, password?: Nullable<string>): Nullable<Token> | Promise<Nullable<Token>>;
-    createTrainings(data?: Nullable<CreateTrainingInput>): Nullable<string> | Promise<Nullable<string>>;
+    createTrainings(data?: Nullable<TrainingInput>): Nullable<string> | Promise<Nullable<string>>;
     createUser(data?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export interface IQuery {
+    getExercises(categoryID?: Nullable<number>): Nullable<Nullable<Exercise>[]> | Promise<Nullable<Nullable<Exercise>[]>>;
     user(userId?: Nullable<number>): Nullable<User> | Promise<Nullable<User>>;
     findByEmail(email?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
 }

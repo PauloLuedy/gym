@@ -12,10 +12,16 @@ import { IsPublic } from '../auth/decorators/is-public.decorator';
 export class UserResolvers {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(GqlAuthGuard)
   @Query()
+  @IsPublic()
   async findByEmail(@Args('email') email: string) {
-    return await this.userService.findByEmail(email);
+    try {
+      const user = await this.userService.findByEmail(email);
+      return user;
+    } catch (error) {
+      console.error('Erro no findByEmail:', error);
+      throw new Error('Credenciais inválidas');
+    }
   }
 
   @Query()
@@ -25,7 +31,6 @@ export class UserResolvers {
 
   @Mutation()
   @IsPublic()
-  //@ts-ignore
   async createUser(@Args('data', new ValidationPipe()) input: UserDTO) {
     const userInfo = {
       ...input,

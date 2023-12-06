@@ -31,7 +31,7 @@ export class AuthService {
   async login(user: UserDTO): Promise<{ acess_tokem: string }> {
     const payload = {
       email: user.email,
-      sub: user.userId,
+      sub: user.userID,
     };
 
     const tokem = await this.jwtService.sign(payload);
@@ -42,8 +42,11 @@ export class AuthService {
       throw new Error('Deu erro na autenticação');
     }
 
+    userAuth.password = 'undefined';
+
     return {
       ...userAuth,
+
       acess_tokem: tokem,
     };
   }

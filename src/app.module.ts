@@ -5,6 +5,7 @@ import { join } from 'path';
 import { UserModule } from './modules/users/users.module';
 import { PrismaService } from './prisma.service';
 import { TrainingModule } from './modules/training/training.module';
+import { ExerciseModule } from './modules/exercise/exercise.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { GqlAuthGuard } from './modules/auth/guards/gql-auth.guard';
@@ -21,12 +22,14 @@ import { GqlAuthGuard } from './modules/auth/guards/gql-auth.guard';
     }),
     UserModule,
     TrainingModule,
+    ExerciseModule,
     AuthModule,
   ],
   providers: [
     PrismaService,
     UserModule,
     TrainingModule,
+    ExerciseModule,
     AuthModule,
     {
       provide: APP_GUARD,

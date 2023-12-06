@@ -1,22 +1,16 @@
 import { InputType } from '@nestjs/graphql';
 
 @InputType()
-export class TrainingDTO {
-  userId?: number;
-  exercises?: CreateExerciseInput[];
-  categories?: CreateCategoryToExerciseInput[];
+export class CreateTrainingDTO {
+  userID?: number;
+  exercises?: CreateCategorynputTraining[];
+  categories: CreateExerciseInputTraining[];
 }
 
-@InputType()
-export class CreateExerciseInput {
-  exerciseID?: number;
-  name?: string;
-  img?: string;
-  category?: CreateCategoryToExerciseInput;
+class CreateExerciseInputTraining {
+  exerciseID: number;
 }
 
-@InputType()
-export class CreateCategoryToExerciseInput {
-  categoryIdReference?: number;
-  exerciseIdReference?: number;
+class CreateCategorynputTraining {
+  categoryID: number;
 }

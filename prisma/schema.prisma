@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  userId    Int        @id @default(autoincrement())
+  userID    Int        @id @default(autoincrement())
   name      String
   email     String     @unique
   password  String
@@ -16,7 +16,7 @@ model User {
 }
 
 model Category {
-  categoryId Int        @id
+  categoryID Int        @id
   name       String
   exercises CategoryToExercise[]
   trainings   TrainingToCategory[]
@@ -32,8 +32,8 @@ model Exercise {
 
 model Training {
   id            Int @id @default(autoincrement())
-  userId        Int         
-  user      User                 @relation(fields: [userId], references: [userId])
+  userID        Int         
+  user      User                 @relation(fields: [userID], references: [userID])
   exercises TrainingToExercise[]
   categories  TrainingToCategory[]
 }
@@ -41,26 +41,26 @@ model Training {
 model CategoryToExercise {
   categoryIdReference Int
   exerciseIdReference Int
-  category   Category @relation(fields: [categoryIdReference], references: [categoryId])
+  category   Category @relation(fields: [categoryIdReference], references: [categoryID])
   exercise   Exercise @relation(fields: [exerciseIdReference], references: [exerciseID])
 
   @@id([categoryIdReference, exerciseIdReference])
 }
 
 model TrainingToExercise {
-  training   Training @relation(fields: [trainingId], references: [id])
-  trainingId Int
-  exercise   Exercise @relation(fields: [exerciseTrainigId], references: [exerciseID])
-  exerciseTrainigId Int
+  training   Training @relation(fields: [trainingID], references: [id])
+  trainingID Int
+  exercise   Exercise @relation(fields: [exerciseID], references: [exerciseID])
+  exerciseID Int
 
-  @@unique([trainingId, exerciseTrainigId])
+  @@unique([trainingID, exerciseID])
 }
 
 model TrainingToCategory {
-  training    Training @relation(fields: [trainingId], references: [id])
-  trainingId  Int
-  category    Category @relation(fields: [categoryId], references: [categoryId])
-  categoryId  Int
+  training    Training @relation(fields: [trainingID], references: [id])
+  trainingID  Int
+  category    Category @relation(fields: [categoryID], references: [categoryID])
+  categoryID  Int
 
-  @@id([trainingId, categoryId])
+  @@id([trainingID, categoryID])
 }

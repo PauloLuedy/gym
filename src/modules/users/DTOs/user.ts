@@ -1,5 +1,4 @@
 import { InputType } from '@nestjs/graphql';
-import { TrainingDTO } from '../../training/DTOs/training';
 
 import {
   IsEmail,
@@ -10,8 +9,28 @@ import {
 } from 'class-validator';
 
 @InputType()
+class TrainingDTO {
+  userId?: number;
+  exercises?: CreateExerciseInput[];
+  categories?: CreateCategoryToExerciseInput[];
+}
+
+@InputType()
+class CreateExerciseInput {
+  exerciseID?: number;
+  name?: string;
+  img?: string;
+  category?: CreateCategoryToExerciseInput;
+}
+
+@InputType()
+class CreateCategoryToExerciseInput {
+  categoryIdReference?: number;
+  exerciseIdReference?: number;
+}
+@InputType()
 export class UserDTO {
-  userId: number;
+  userID: number;
 
   @IsString({ message: 'Deve ser um texto' })
   @IsNotEmpty({ message: 'O nome não pode estar vazio' })

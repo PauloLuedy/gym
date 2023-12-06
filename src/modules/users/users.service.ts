@@ -1,5 +1,4 @@
 import { Resolver } from '@nestjs/graphql';
-import { UserDTO } from './DTOs/user';
 import { Inject, Injectable } from '@nestjs/common';
 import 'reflect-metadata';
 import { PrismaService } from '../../prisma.service';
@@ -9,9 +8,9 @@ import { PrismaService } from '../../prisma.service';
 export class UserService {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  async user(userId) {
+  async user(userID) {
     const user = await this.prismaService.user.findUnique({
-      where: { userId },
+      where: { userID },
       include: {
         trainings: {
           include: {
@@ -39,7 +38,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(`Usuário com ID ${userId} não encontrado`);
+      throw new Error(`Usuário com ID ${userID} não encontrado`);
     }
 
     return { ...user, password: '***' };
@@ -69,12 +68,12 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error('Email ou senha invalido');
+      throw new Error('VSF');
     }
 
     const trainings = await this.prismaService.training.findMany({
       where: {
-        userId: user.userId,
+        userID: user.userID,
       },
     });
 
@@ -87,19 +86,19 @@ export class UserService {
     const traingToCategory =
       await this.prismaService.trainingToCategory.findMany({
         where: {
-          trainingId: {
+          trainingID: {
             in: trainingIds,
           },
         },
       });
 
     const traingToCategoryIds = traingToCategory.map(
-      (categories) => categories.categoryId,
+      (categories) => categories.categoryID,
     );
 
     const selectedCategories = await this.prismaService.category.findMany({
       where: {
-        categoryId: {
+        categoryID: {
           in: traingToCategoryIds,
         },
       },
@@ -108,14 +107,14 @@ export class UserService {
     const traingToExercise =
       await this.prismaService.trainingToExercise.findMany({
         where: {
-          trainingId: {
+          trainingID: {
             in: trainingIds,
           },
         },
       });
 
     const traingToExerciseIds = traingToExercise.map(
-      (traingToExerciseId) => traingToExerciseId.exerciseTrainigId,
+      (traingToExerciseId) => traingToExerciseId.exerciseID,
     );
 
     const selectdExercices = await this.prismaService.exercise.findMany({
@@ -132,7 +131,7 @@ export class UserService {
         id: itemTraining.id,
         categories: selectedCategories.map((item) => ({
           category: {
-            categoryID: item.categoryId,
+            categoryID: item.categoryID,
             name: item.name,
           },
         })),
