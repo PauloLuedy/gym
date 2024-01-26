@@ -8,6 +8,7 @@ export class TrainingResolver {
   constructor(private readonly trainingService: TrainingService) {}
 
   @Mutation()
+  @IsPublic()
   public async createTrainings(@Args('data') data: CreateTrainingDTO) {
     const result = await this.trainingService.createTrainings(data);
 
