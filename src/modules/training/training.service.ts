@@ -8,7 +8,7 @@ export class TrainingService {
   public async createTrainings(data) {
     const verifyUser = await this.prismaService.user.findUnique({
       where: {
-        userId: data.userId,
+        userID: data.userID,
       },
     });
 
@@ -18,15 +18,15 @@ export class TrainingService {
 
     const newTraining = await this.prismaService.training.create({
       data: {
-        userId: data.userId,
+        userID: data.userID,
       },
     });
 
     for (const exercise of data.exercises) {
       await this.prismaService.trainingToExercise.create({
         data: {
-          trainingId: newTraining.id,
-          exerciseTrainigId: exercise.exerciseID,
+          trainingID: newTraining.id,
+          exerciseID: exercise.exerciseID,
         },
       });
     }
@@ -34,8 +34,8 @@ export class TrainingService {
     for (const category of data.categories) {
       await this.prismaService.trainingToCategory.create({
         data: {
-          trainingId: newTraining.id,
-          categoryId: category.categoryIdReference,
+          trainingID: newTraining.id,
+          categoryID: category.categoryID,
         },
       });
     }

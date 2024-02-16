@@ -1,27 +1,17 @@
-input CreateUserInput {
-  name: String!
-  email: String!
-  password: String!
+input TrainingInput {
+  userID: Int
+  exercises: [CreateExerciseInputTraining]
+  categories: [CreateCategoryInputTraining]
 }
 
-input CreateTrainingInput {
-  userId: Int
-  exercises: [CreateExerciseInput]
-  categories: [CreateCategoryToExerciseInput]
-}
-
-input CreateExerciseInput {
+input CreateExerciseInputTraining {
   exerciseID: Int
-  name: String
-  img: String
-  category: CreateCategoryToExerciseInput
 }
 
-input CreateCategoryToExerciseInput {
-  categoryIdReference: Int
-  exerciseIdReference: Int
+input CreateCategoryInputTraining {
+  categoryID: Int
 }
 
 type Mutation {
-  createTrainings(data: CreateTrainingInput): String
+  createTrainings(data: TrainingInput): String
 }

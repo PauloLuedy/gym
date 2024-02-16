@@ -43,6 +43,10 @@ type TrainingToCategory {
   category: Category!
 }
 
+type Token {
+  acess_tokem: String
+}
+
 type Mutation {
-  login(email: String, password: String): User
+  login(email: String, password: String): Token
 }

@@ -6,8 +6,8 @@ input CreateUserInput {
 
 input CreateTrainingInput {
   userId: Int
-  exercises: [CreateExerciseInput] # Usando um novo tipo de entrada para Exercise
-  categories: [CreateCategoryToExerciseInput] # Usando um novo tipo de entrada para CategoryToExercise
+  exercises: [CreateExerciseInput]
+  categories: [CreateCategoryToExerciseInput]
 }
 
 input CreateExerciseInput {
@@ -69,6 +69,7 @@ type TrainingToCategory {
 
 type Query {
   user(userId: Int): User
+  findByEmail(email: String): User
 }
 
 type Mutation {

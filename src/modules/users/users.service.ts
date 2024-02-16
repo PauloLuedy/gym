@@ -1,16 +1,16 @@
 import { Resolver } from '@nestjs/graphql';
-
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import 'reflect-metadata';
 import { PrismaService } from '../../prisma.service';
 
+@Injectable()
 @Resolver()
 export class UserService {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  async user(userId) {
+  async user(userID) {
     const user = await this.prismaService.user.findUnique({
-      where: { userId },
+      where: { userID },
       include: {
         trainings: {
           include: {
@@ -38,7 +38,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(`Usuário com ID ${userId} não encontrado`);
+      throw new Error(`Usuário com ID ${userID} não encontrado`);
     }
 
     return { ...user, password: '***' };
@@ -60,11 +60,91 @@ export class UserService {
     return { ...createdUser, password: '***' };
   }
 
-  async findByEmail(email: string) {
-    return this.prismaService.user.findUnique({
+  async findByEmail(email: string): Promise<any | undefined> {
+    const user = await this.prismaService.user.findUnique({
       where: {
-        email,
+        email: email,
       },
     });
+
+    if (!user) {
+      throw new Error('VSF');
+    }
+
+    const trainings = await this.prismaService.training.findMany({
+      where: {
+        userID: user.userID,
+      },
+    });
+
+    if (trainings.length === 0) {
+      return { ...user, trainings: [] };
+    }
+
+    const trainingIds = trainings.map((training) => training.id);
+
+    const traingToCategory =
+      await this.prismaService.trainingToCategory.findMany({
+        where: {
+          trainingID: {
+            in: trainingIds,
+          },
+        },
+      });
+
+    const traingToCategoryIds = traingToCategory.map(
+      (categories) => categories.categoryID,
+    );
+
+    const selectedCategories = await this.prismaService.category.findMany({
+      where: {
+        categoryID: {
+          in: traingToCategoryIds,
+        },
+      },
+    });
+
+    const traingToExercise =
+      await this.prismaService.trainingToExercise.findMany({
+        where: {
+          trainingID: {
+            in: trainingIds,
+          },
+        },
+      });
+
+    const traingToExerciseIds = traingToExercise.map(
+      (traingToExerciseId) => traingToExerciseId.exerciseID,
+    );
+
+    const selectdExercices = await this.prismaService.exercise.findMany({
+      where: {
+        exerciseID: {
+          in: traingToExerciseIds,
+        },
+      },
+    });
+
+    const userMaker = {
+      ...user,
+      trainings: trainings.map((itemTraining) => ({
+        id: itemTraining.id,
+        categories: selectedCategories.map((item) => ({
+          category: {
+            categoryID: item.categoryID,
+            name: item.name,
+          },
+        })),
+        exercises: selectdExercices.map((exerciseItem) => ({
+          exercise: {
+            exerciseID: exerciseItem.exerciseID,
+            name: exerciseItem.name,
+            img: exerciseItem.img,
+          },
+        })),
+      })),
+    };
+
+    return userMaker;
   }
 }
